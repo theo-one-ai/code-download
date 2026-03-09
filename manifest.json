@@ -1,0 +1,34 @@
+{
+    "manifest_version": 3,
+    "name": "Lovable Source Downloader",
+    "version": "1.0",
+    "description": "Lovable 프로젝트의 소스 코드를 클릭 한 번으로 다운로드 합니다.",
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "downloads",
+        "webRequest"
+    ],
+    "host_permissions": [
+        "https://lovable.dev/*",
+        "https://api.lovable.dev/*"
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "Lovable Downloader"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://lovable.dev/projects/*"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "run_at": "document_start"
+        }
+    ]
+}
