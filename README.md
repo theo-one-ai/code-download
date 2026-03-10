@@ -14,9 +14,25 @@ Lovable은 소스 코드를 GitHub에 연동할 수 있지만, Private 저장소
 
 ## 🚀 설치 방법
 
+이 도구는 **크롬 확장 프로그램** 또는 설치가 필요 없는 **북마클릿(Bookmarklet)** 두 가지 방식으로 사용할 수 있습니다.
+
+### 방법 1: 북마클릿 (초간편 방식 / 웹브라우저 즐겨찾기 바 클릭)
+
+아래의 `[Lovable Download]` 버튼(링크 형태)을 마우스로 잡고(드래그) 브라우저의 책갈피(북마크) 표시줄로 떨어뜨립니다(드롭).
+
+<a href="javascript:(async()=>{const l=()=>new Promise(r=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';s.onload=r;document.head.appendChild(s)});if(window._lv_token){return sd(window._lv_token)}let t=null;const of=window.fetch;const ts=document.createElement('div');ts.id='dl-toast';ts.style.cssText='position:fixed;bottom:24px;left:50%25;transform:translateX(-50%25);background:linear-gradient(135deg,%230f172a,%231e293b);padding:16px 28px;border-radius:12px;z-index:999999;color:%23e2e8f0;font-family:system-ui,sans-serif;font-size:14px;box-shadow:0 8px 32px rgba(0,0,0,0.4);border:1px solid %23334155;display:flex;align-items:center;gap:12px;';ts.innerHTML='<span style=font-size:20px>🔑</span><span>에디터 상단 버튼(Code/Preview 등)을 한번 눌러주세요</span><button id=dl-x style=margin-left:12px;background:none;border:1px+solid+%23475569;color:%2394a3b8;padding:4px+12px;border-radius:6px;cursor:pointer;font-size:12px>취소</button>';document.body.appendChild(ts);const cln=()=>{window.fetch=of;const el=document.getElementById('dl-toast');if(el)el.remove()};document.getElementById('dl-x').onclick=cln;window.fetch=async function(...a){const u=a[0]?.toString()||'',op=a[1]||{},au=op.headers?.Authorization||op.headers?.authorization;if(u.includes('api.lovable.dev')%26%26au){t=au.replace('Bearer ','').trim();window._lv_token=t;cln();sd(t);return Promise.reject(new Error('ok'))}return of.apply(this,a)};async function sd(tk){await l();const z=new JSZip(),pid=window.location.pathname.split('/')[2],api='https://api.lovable.dev/projects/'+pid+'/files/raw?path=';const bar=document.createElement('div');bar.id='dl-bar';bar.style.cssText='position:fixed;top:0;left:0;width:0;height:3px;background:linear-gradient(90deg,%233b82f6,%238b5cf6);z-index:999999;transition:width 0.2s';document.body.appendChild(bar);const st=document.createElement('div');st.id='dl-st';st.style.cssText='position:fixed;top:8px;right:16px;background:%230f172a;color:%23e2e8f0;padding:8px 16px;border-radius:8px;z-index:999999;font-family:system-ui,sans-serif;font-size:13px;border:1px solid %23334155';st.textContent='📂 스캔중...';document.body.appendChild(st);let lc=20;while(lc-->0){const c=Array.from(document.querySelectorAll('.overflow-x-auto .group')).filter(r=>{const s=r.querySelector('svg.transition-transform');return s%26%26!s.classList.contains('rotate-90')});if(!c.length)break;c.forEach(f=>f.click());await new Promise(r=>setTimeout(r,80))}const rs=document.querySelectorAll('.overflow-x-auto .group');let sk=[],files=[];for(const r of rs){const n=r.querySelector('[title]')?.getAttribute('title');if(!n)continue;const d=parseInt(r.querySelector('[style*=%22margin-left%22]')?.style.marginLeft||0)/16;sk=sk.slice(0,d);if(r.querySelector('svg.transition-transform')||!n.includes('.')){sk.push(n)}else{files.push(sk.length?sk.join('/')+'/'+n:n)}}let dn=0,tot=files.length;st.textContent='📥 0/'+tot;for(let i=0;i<files.length;i+=30){const b=files.slice(i,i+30);await Promise.all(b.map(async p=>{for(let r=0;r<3;r++){try{const res=await fetch(api+encodeURIComponent(p),{headers:{'Authorization':'Bearer '+tk}});if(res.ok){z.file(p,await res.text());break}if(res.status===401)break}catch(e){await new Promise(r=>setTimeout(r,300))}}dn++;st.textContent='📥 '+dn+'/'+tot;bar.style.width=(dn/tot*100)+'%25'}))}st.textContent='📦 압축중...';const b=await z.generateAsync({type:'blob'});const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='project-'+pid+'.zip';a.click();st.textContent='✅ 완료!';bar.style.background='%2310b981';bar.style.width='100%25';setTimeout(()=>{bar.remove();st.remove()},3000)}})();" style="display:inline-block;padding:10px 15px;background-color:#0ea5e9;color:white;border-radius:6px;text-decoration:none;font-weight:bold;">✨ Lovable Download ✨</a>
+
+1. **(설치)** 위 버튼을 잡아서 북마크바에 놓습니다.
+2. **(실행)** Lovable 에디터 접속 중일 때 등록한 북마크를 살짝 클릭합니다.
+*(설치 없이 북마크바에 복사+붙여넣기로 직접 URL 입력을 하셔도 무방합니다!)*
+
+---
+
+### 방법 2: 크롬 확장 프로그램 (수동 설치)
+
 1. 이 저장소를 클론하거나 ZIP으로 다운로드합니다.
    ```bash
-   git clone https://github.com/YOUR_USERNAME/download_code.git
+   git clone https://github.com/theo-one-ai/code-download.git
    ```
 2. 크롬 브라우저에서 `chrome://extensions/` 주소로 이동합니다.
 3. 우측 상단의 **개발자 모드(Developer mode)** 토글을 활성화합니다.
